@@ -1,0 +1,8 @@
+include <examples/version_1-ex/devs.prp>
+
+fn main() {
+    const a;
+    if ("a" == "") {
+        const b;
+    }
+}

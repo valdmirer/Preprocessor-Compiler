@@ -1,0 +1,57 @@
+COMMENTS:
+    FILE ERRORS: 001-002, 135-137
+    SYNTAX ERRORS: 031-032, 041-042, 050-054, 057, 062, 064-065, 117, 119, 124, 144, 148
+    IDENTIFIER ERRORS: 055, 123
+    VARIABLE ERRORS: 063, 128
+    FUNCTION ERRORS: 059-061, 126, 129
+    ARRAY ERRORS: 058
+    CONSTANT ERRORS: 118
+    POINTER ERRORS: 130, 132
+    MEMORY ERRORS: 131, 133
+    LOOP ERRORS: 120-121, 134
+    RETURN ERRORS: 122
+    OPERATION ERRORS: 056, 127, 149-150
+    MACRO ERRORS: 091, 125
+    MACRO WARNINGS: 092,
+    ARGUMENT/CONFIGURATION ERRORS: 138, 140
+    ENVIRONMENT ERRORS: 139
+    PERMISSION/RESOURCE ERRORS: 141-143
+    FEATURE/DEPENDENCY ERRORS: 145-147
+
+    All exceptions in the program are listed below to eliminate any kind of confusion faced by the user.
+    Note that All the changes made in this module will be informed to the user by comparing hash values of the-
+    -original with the tampered/user version.
+    See license
+
+
+VARIABLES:
+    $; = \033[3m
+    $| = \033[35m
+    $! = \033[0m
+    $# = \033[31m
+
+    $> = \033[0m
+    $< = \033[1m\033[91m
+
+PREMETHEUS FILE ERRORS:
+    PRP1_001:
+        MANUAL:
+            test 1
+    PRP1_002:
+        MANUAL:
+            test 2
+    PRP1_031:
+        MANUAL:
+            test 31
+    PRP1_032:
+        MANUAL:
+            test 32
+    PRP1_035:
+        MANUAL:
+            test 35
+    PRP1_034:
+        MANUAL:
+            test 34
+    PRP1_039:
+        MANUAL:
+            test 39

@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PREP</title>
+</head>
+<style>
+    @font-face {
+        font-family: "sequel";
+        src: url("/Ahamono-Font/AHAMONO-Monospaced.otf") format("truetype");
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "sequel", sans-serif;
+        font-optical-sizing: auto;
+        font-style: normal;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    .col {
+        display: block;
+    }
+
+    body {
+        min-height: 100vh;
+        display: flex;
+        margin-left: 25px;
+        justify-content: start;
+        align-items: start;
+        background-color: #ffffff;
+        /* White background */
+        background-color: #fffaf1;
+        background-color: #f3f4f5;
+        background-color: #242021;
+        background-color: #000;
+        flex-direction: column;
+        overflow-x: hidden;
+        color: #ececec;
+        font-weight: 100;
+        gap: 10px;
+        font-size: 12px;
+    }
+
+    .bus {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid rgb(110, 13, 13);
+        width: 100%;
+    }
+
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .bus_container {
+        width: 80vw;
+        height: 10vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .line {
+        position: absolute;
+        width: 1px;
+        background-color: #ffffff65;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    .line::after {
+        content: "";
+        position: absolute;
+        right: -2px;
+        /* Adjust to position the circle relative to the line */
+        top: 0%;
+        transform: translateY(0%);
+        width: 6px;
+        /* Circle diameter */
+        height: 100%;
+        /* Circle diameter */
+        background-color: #cdcdcd43;
+        /* Or any color */
+        border-radius: 50%;
+        clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    }
+
+    .line::before {
+        content: ".";
+        position: absolute;
+        right: -3px;
+        /* Adjust to position the circle relative to the line */
+        top: 99%;
+        transform: translateY(0%);
+        width: 10px;
+        /* Circle diameter */
+        height: 10px;
+        /* Circle diameter */
+        background-color: rgb(255, 255, 255);
+        /* Or any color */
+        border-radius: 50%;
+        box-shadow: 0 0 10px #3498db, 0 0 20px #ffffff, 0 0 30px #3498db;
+        clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+
+    .line::before::before {
+        box-shadow: 0 0 10px #3498db, 0 0 20px #ffffff, 0 0 30px #3498db;
+    }
+
+    .line2 {
+        position: absolute;
+        width: 1px;
+        background-color: #ffffff65;
+        user-select: none;
+        pointer-events: none;
+    }
+
+    .line2::after {
+        content: "";
+        position: absolute;
+
+        right: -3px;
+        /* Adjust to position the circle relative to the line */
+        top: 99%;
+        transform: translateY(0%);
+
+        width: 6px;
+        /* Circle diameter */
+        height: 10px;
+        /* Circle diameter */
+        background-color: #cdcdcd00;
+        /* Or any color */
+        border-radius: 50%;
+    }
+
+    .line2::before {
+        content: ".";
+        position: absolute;
+
+        right: -2px;
+        /* Adjust to position the circle relative to the line */
+        top: 0%;
+        transform: translateY(0%);
+
+        width: 10px;
+        /* Circle diameter */
+        height: 10px;
+        /* Circle diameter */
+        background-color: rgb(255, 255, 255);
+        /* Or any color */
+        border-radius: 50%;
+        box-shadow: 0 0 10px #3498db, 0 0 20px #ffffff, 0 0 30px #3498db;
+        clip-path: polygon(50% 0, 100% 100%, 0 100%);
+
+        transform: rotate(180deg);
+    }
+
+    .line2::before::before {
+        box-shadow: 0 0 10px #3498db, 0 0 20px #ffffff, 0 0 30px #3498db;
+    }
+
+    .textsmall {
+        display: inline-block;
+        margin: 0;
+        padding: 0;
+        width: fit-content;
+        /* Exact text width */
+        text-align: justify;
+        font-size: 12px;
+    }
+
+    .textsmall:hover {
+        outline: 1px solid white;
+        cursor: pointer;
+        background-color: #000;
+        position: relative;
+        z-index: 1;
+    }
+
+    .center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bus_C {
+        display: flex;
+        width: auto;
+    }
+</style>
+
+<body>
+    <br /><br />
+    <h1 style="width: 100%; font-size: 45px;" class="center">Pre-Metheus</h1>
+    <br />
+    <p>REGISTER & BUS</p>
+    <p style="color: red;">[+] BUY ownership</p>
+    <p>[+] CONTACT</p>
+    <p>[+] DONATION</p>
+    <p>[+] TEAM-INFO</p>
+    <p>[+] HISTORY</p>
+    <br /><br />
+    <div style="
+        margin-top: 25px;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        width: 100%;
+        height: 100%;
+      ">
+      <p style="white-space: pre-wrap;">
+    mainHandleUserInput
+        │
+        ├──> Expect (error checking)
+        ├──> readFileMeta
+        │     └──> prepTokenizer
+        │           ├──> FlagRoutine
+        │           │     ├──> ReadLines
+        │           │     ├──> removeComments
+        │           │     └──> Flagg
+        │           └──> bubbleSort (from tests)
+        │           └──> timeline (inner)
+        │                 ├──> preserveBlock_
+        │                 │     └──> freeze
+        │                 └──> Expect (error checking)
+        ├──> Manual (from src.er.DSL)
+        ├──> os, sys, mmap, re, string, decimal, time (standard libs)
+        ├──> Manager, TUPLE, Macro, Pratt, DirectivePrem, Directive (internal classes)
+        │     ├──> Manager: token management
+        │     ├──> Macro: macro expansion
+        │     ├──> Pratt: tree structure
+        │     ├──> DirectivePrem: preprocessor directive handling
+        │     └──> Directive: regex-based directive matching
+        ├──> putInDebug, getDetails (debugging)
+        ├──> stored (utility)
+        ├──> Hash (from tests.Hash)
+        └──> FileStrip, bubbleSort, binarySearch (from tests)
+      </p>
+      <br><br><br><br><br>
+        <div class="row">
+            <div class="bus_C" style="
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column-reverse;
+            height: 100%;
+          ">
+          
+                <p id="text_0" class="textsmall" style="transform: translateX(140px);">
+                    PRAPPER-1
+                </p>
+                <div id="line_0" class="line" style="
+              transform: rotate(0deg);
+              top: 469.5px;
+              left: 282px;
+              height: 44px;
+            "></div>
+                <p id="text_1" class="textsmall" style="transform: translateX(130px);">
+                    PREP-TOKENIZER-1
+                </p>
+                <div id="line_1" class="line" style="
+              transform: rotate(0deg);
+              top: 478.5px;
+              left: 272px;
+              height: 44px;
+            "></div>
+                <p id="text_2" class="textsmall" style="transform: translateX(14px);">
+                    FLAGS-ROUTINE-12-<i style="color: grey;">[0.00004s]</i>
+                </p>
+                <div id="line_2" class="line" style="
+              transform: rotate(0deg);
+              top: 488.5px;
+              left: 156px;
+              height: 44px;
+            "></div>
+                <p id="text_3" class="textsmall" style="transform: translateX(11px);">
+                    <i style="color: red;">[</i>CLS-0<i style="color: red;">]</i>-<i style="color: grey;">[0.0005s]</i>
+                </p>
+                <div id="line_3" class="line" style="
+              transform: rotate(0deg);
+              top: 497.5px;
+              left: 153px;
+              height: 44px;
+            "></div>
+                <p id="text_4" class="textsmall" style="transform: translateX(9px);">
+                    GET-FLAGS-INFO-1-<i style="color: grey;">[0.000009s]</i>
+                </p>
+                <div id="line_4" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_5" class="textsmall" style="transform: translateX(9px);">
+                    INVOKE-FLAGS-1-<i style="color: grey;">[0.000005s]</i>
+                </p>
+                <div id="line_5" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_6" class="textsmall" style="transform: translateX(9px);">
+                    FIND-DIRECTIVE-1-<i style="color: grey;"></i>
+                </p>
+                <div id="line_6" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_13" class="textsmall" style="transform: translateX(9px);">
+                    INVOKE_DIRECTIVE<i style="color: grey;"></i>
+                </p>
+                <div id="line_13" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_10" class="textsmall" style="transform: translateX(9px);">
+                    MACRO<i style="color: grey;"></i>
+                </p>
+                <div id="line_10" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_7" class="textsmall" style="transform: translateX(9px);">
+                    MACRO.SUBSTITUTION-1-<i style="color: grey;"></i>
+                </p>
+                <div id="line_7" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_8" class="textsmall" style="transform: translateX(9px);">
+                    MACRO.TOKENS-1-<i style="color: grey;"></i>
+                </p>
+                <div id="line_8" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_9" class="textsmall" style="transform: translateX(9px);">
+                    TOKENS_PREP.MACROS-1-<i style="color: grey;"></i>
+                </p>
+                <div id="line_9" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_11" class="textsmall" style="transform: translateX(9px);">
+                    REPLACE_MACRO-2<i style="color: grey;"></i>
+                </p>
+                <div id="line_11" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_12" class="textsmall" style="transform: translateX(9px);">
+                    REPLACE_ARG_MECRO-2<i style="color: grey;"></i>
+                </p>
+                <div id="line_12" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_34" class="textsmall" style="transform: translateX(9px);">
+                    MANAGER.Tokens<i style="color: grey;"></i>
+                </p>
+                <div id="line_34" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_14" class="textsmall" style="transform: translateX(9px);">
+                    MANAGER_LOWER.Tokens<i style="color: grey;"></i>
+                </p>
+                <div id="line_14" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+            </div>
+
+        <div class="bus_C" id="nirvana" style="
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        ">
+                        <p  class="textsmall" style="transform: translateX(9px); opacity: 0; user-select: none;">
+                    EMPTY><i style="color: grey;"></i>
+                </p>
+                        <p  class="textsmall" style="transform: translateX(9px); opacity: 0; user-select: none;">
+                    EMPTY><i style="color: grey;"></i>
+                </p>
+
+                        <p  class="textsmall" style="transform: translateX(9px); opacity: 0; user-select: none;">
+                    EMPTY><i style="color: grey;"></i>
+                </p>
+
+                        <p  class="textsmall" style="transform: translateX(9px); opacity: 0; user-select: none;">
+                    EMPTY><i style="color: grey;"></i>
+                </p>
+
+                        <p  class="textsmall" style="transform: translateX(9px); opacity: 0; user-select: none;">
+                    EMPTY><i style="color: grey;"></i>
+                </p>
+
+
+                <p id="text_35" class="textsmall" style="transform: translateX(9px);">
+                    [BEFORE-STATEMENTS]:<i style="color: grey;"></i>
+                </p>
+                <div id="line_35" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+
+                <p id="text_36" class="textsmall" style="transform: translateX(9px);">
+                    remove_excessive_whitespace<i style="color: grey;"></i>
+                </p>
+                <div id="line_36" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+                <p id="text_37" class="textsmall" style="transform: translateX(9px);">
+                    remove_comments<i style="color: grey;"></i>
+                </p>
+                <div id="line_37" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+
+                <p id="text_38" class="textsmall" style="transform: translateX(9px);">
+                    split_preserving_blocks<i style="color: grey;"></i>
+                </p>
+                <div id="line_38" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+
+                <p id="text_39" class="textsmall" style="transform: translateX(9px);">
+                    Pratt_Parser<i style="color: grey;"></i>
+                </p>
+                <div id="line_39" class="line" style="
+              transform: rotate(0deg);
+              top: 507.5px;
+              left: 151px;
+              height: 44px;
+            "></div>
+
+
+            </div>
+        </div>
+
+        <div class="center bus_container" style="display: flex; flex-direction: row;">
+            <div id="bus" class="bus"></div>
+        </div>
+
+        <div class="bus_C" id="nirvana" style="
+          margin: 0;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+        ">
+            <p id="text_15" class="textsmall" style="color: red; transform: translateX(9px);">
+                _if<i style="color: grey;"></i>
+            </p>
+            <div id="line_15" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_16" class="textsmall" style="color: red; transform: translateX(9px);">
+                _ifdef<i style="color: grey;"></i>
+            </p>
+            <div id="line_16" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_17" class="textsmall" style="color: red; transform: translateX(9px);">
+                _ifndef<i style="color: grey;"></i>
+            </p>
+            <div id="line_17" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_18" class="textsmall" style="color: red; transform: translateX(9px);">
+                _elif<i style="color: grey;"></i>
+            </p>
+            <div id="line_18" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_19" class="textsmall" style="color: red; transform: translateX(9px);">
+                _endif<i style="color: grey;"></i>
+            </p>
+            <div id="line_19" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_20" class="textsmall" style="color: red; transform: translateX(9px);">
+                _else<i style="color: grey;"></i>
+            </p>
+            <div id="line_20" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_21" class="textsmall" style="color: red; transform: translateX(9px);">
+                pragma<i style="color: grey;"></i>
+            </p>
+            <div id="line_21" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_22" class="textsmall" style="color: red; transform: translateX(9px);">
+                error<i style="color: grey;"></i>
+            </p>
+            <div id="line_22" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_23" class="textsmall" style="color: red; transform: translateX(9px);">
+                warning<i style="color: grey;"></i>
+            </p>
+            <div id="line_23" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_24" class="textsmall" style="color: red; transform: translateX(9px);">
+                include<i style="color: grey;"></i>
+            </p>
+            <div id="line_24" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_25" class="textsmall" style="color: red; transform: translateX(9px);">
+                include<i style="color: grey;"></i>
+            </p>
+            <div id="line_25" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_26" class="textsmall" style="color: red; transform: translateX(9px);">
+                undef<i style="color: grey;"></i>
+            </p>
+            <div id="line_26" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_27" class="textsmall" style="color: red; transform: translateX(9px);">
+                define<i style="color: grey;"></i>
+            </p>
+            <div id="line_27" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_28" class="textsmall" style="color: red; transform: translateX(9px);">
+                define<i style="color: grey;"></i>
+            </p>
+            <div id="line_28" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_29" class="textsmall" style="color: red; transform: translateX(9px);">
+                region<i style="color: grey;"></i>
+            </p>
+            <div id="line_29" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_30" class="textsmall" style="color: red; transform: translateX(9px);">
+                endregion<i style="color: grey;"></i>
+            </p>
+            <div id="line_30" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_31" class="textsmall" style="color: red; transform: translateX(9px);">
+                ^_LOWER<i style="color: grey;"></i>
+            </p>
+            <div id="line_31" class="line2" style="
+transform : rotate(0 deg);
+
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_32" class="textsmall" style="color: red; transform: translateX(9px);">
+                ^_LOWER<i style="color: grey;"></i>
+            </p>
+            <div id="line_32" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+            <p id="text_33" class="textsmall" style="color: red; transform: translateX(9px);">
+                <i style="color: grey;"></i>
+            </p>
+            <div id="line_33" class="line2" style="
+            transform: rotate(0deg);
+            top: 507.5px;
+            left: 151px;
+            height: 44px;
+          "></div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    function adjustLine(from, to, line, offset) {
+        if (to.parentNode.getAttribute("id") == "nirvana") {
+            var fT = to.offsetTop + to.offsetHeight / 2;
+            var tT = from.offsetTop + from.offsetHeight / 2;
+
+            var fL = from.offsetLeft + offset; //from.offsetWidth/2;
+            var tL = offset + 25; //to.offsetWidth/2;
+        } else {
+            var fT = from.offsetTop + from.offsetHeight / 2;
+            var tT = to.offsetTop + to.offsetHeight / 2;
+
+            var fL = from.offsetLeft + offset; //from.offsetWidth/2;
+            var tL = to.offsetLeft + offset; //to.offsetWidth/2;
+        }
+        //var fL = from.offsetLeft + offset; //from.offsetWidth/2;
+        //var tL = offset+25; //to.offsetWidth/2;
+
+        var CA = Math.abs(tT - fT);
+        var CO = Math.abs(tL - fL);
+        var H = Math.sqrt(CA * CA + CO * CO);
+        var ANG = (180 / Math.PI) * Math.acos(CA / H);
+
+        if (tT > fT) {
+            var top = (tT - fT) / 2 + fT;
+        } else {
+            var top = (fT - tT) / 2 + tT;
+        }
+        if (tL > fL) {
+            var left = (tL - fL) / 2 + fL;
+        } else {
+            var left = (fL - tL) / 2 + tL;
+        }
+
+        if (
+            (fT < tT && fL < tL) ||
+            (tT < fT && tL < fL) ||
+            (fT > tT && fL > tL) ||
+            (tT > fT && tL > fL)
+        ) {
+            ANG *= -1;
+        }
+        top -= H / 2;
+
+        line.style["-webkit-transform"] = "rotate(" + ANG + "deg)";
+        line.style["-moz-transform"] = "rotate(" + ANG + "deg)";
+        line.style["-ms-transform"] = "rotate(" + ANG + "deg)";
+        line.style["-o-transform"] = "rotate(" + ANG + "deg)";
+        line.style["-transform"] = "rotate(" + ANG + "deg)";
+        line.style.top = top + "px";
+        line.style.left = left + "px";
+        line.style.height = H + "px";
+        to.style.transform = `translateX(${left - to.offsetLeft + 10}px)`;
+    }
+
+    var Items = [
+        -1,
+        2,
+        26,
+        29,
+        32,
+        35,
+        98,
+        128,
+        154,
+        160,
+        128,
+        166,
+        167,
+        125,
+        169,
+        
+        217,
+        248,
+        279,
+        280,
+        291,
+        222,
+        233,
+        254,
+        275,
+        296,
+        227,
+        248,
+        269,
+        270,
+        291,
+        232,
+        243,
+        264,
+        275,
+        
+        168,
+
+        310,
+        312,
+        315,
+        330,
+        336,
+    ];
+
+    for (var i = 0; i < Items.length; i++) {
+        //document.querySelector('.bus_C').innerHTML += `<p id="text_${i}" class="textsmall">${Items[i][1]}</p>`;
+        //document.querySelector('.bus_C').innerHTML += `<div id="line_${i}" class="line"></div>`;
+        adjustLine(
+            document.getElementById("bus"),
+            document.getElementById(`text_${i}`),
+            document.getElementById(`line_${i}`),
+            Items[i]
+        );
+    }
+    /*
+  adjustLine(
+  document.getElementById('bus'), 
+  document.getElementById('text_1'),
+  document.getElementById('line_1'),
+  41
+  );*/
+</script>
+<script>
+    /*var Items = [[-1, "GENERAL-TEXT-COORDINATION"], [4, "TEXT-COORDINATION"], [100, "TEXT-COORDINATION"],[120, "TEXT-COORDINATION"],[130, "TEXT-COORDINATION"]];
+  for (var i = 0; i < Items.length; i++) {
+      var _name = `text${i}`;
+      var line = `line${i}`;
+      document.querySelector('.bus_C').innerHTML += `<p id="${_name}" class="textsmall">${Items[i][1]}</p>`;
+      document.querySelector('.bus_container').innerHTML += `<div id="${line}" class="line"></div>`;
+      adjustLine(
+      document.getElementById('bus'), 
+      document.getElementById(_name),
+      document.getElementById(line),
+      Items[i][0]
+      );
+  }*/
+</script>

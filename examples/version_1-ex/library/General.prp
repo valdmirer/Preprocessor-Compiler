@@ -1,0 +1,5 @@
+define GENERAL
+
+define false  0x01
+define true   0x10
+define null   0x00

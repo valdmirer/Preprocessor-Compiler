@@ -1,0 +1,826 @@
+COMMENTS:
+    FILE ERRORS: 001-002, 135-137
+    SYNTAX ERRORS: 031-032, 041-042, 050-054, 057, 062, 064-065, 117, 119, 124, 144, 148
+    IDENTIFIER ERRORS: 055, 123
+    VARIABLE ERRORS: 063, 128
+    FUNCTION ERRORS: 059-061, 126, 129
+    ARRAY ERRORS: 058
+    CONSTANT ERRORS: 118
+    POINTER ERRORS: 130, 132
+    MEMORY ERRORS: 131, 133
+    LOOP ERRORS: 120-121, 134
+    RETURN ERRORS: 122
+    OPERATION ERRORS: 056, 127, 149-150
+    MACRO ERRORS: 091, 125
+    MACRO WARNINGS: 092,
+    ARGUMENT/CONFIGURATION ERRORS: 138, 140
+    ENVIRONMENT ERRORS: 139
+    PERMISSION/RESOURCE ERRORS: 141-143
+    FEATURE/DEPENDENCY ERRORS: 145-147
+
+    All exceptions in the program are listed below to eliminate any kind of confusion faced by the user.
+    Note that All the changes made in this module will be informed to the user by comparing hash values of the-
+    -original with the tampered/user version.
+    See license
+
+
+VARIABLES:
+    $; = \033[3m
+    $| = \033[35m
+    $! = \033[0m
+    $# = \033[31m
+
+    $> = \033[0m
+    $< = \033[1m\033[91m
+
+PREMETHEUS FILE ERRORS:
+    PRP1_001:
+        MESSAGE:
+            No file was specified for the operation.
+        NOTE:
+            Please provide a valid file name to continue.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#Fatal error$!
+        MANUAL:
+            The error code PRP1_001 occurs when no file is specified for the operation. This means \n the parser or program expected a file name to be provided, but it was missing. To fix \n this error, make sure to supply a valid file name whenever it is required by your \n command or function.
+
+    PRP1_002:
+        MESSAGE:
+            The file path provided is invalid or could not be found.
+        NOTE:
+            Make sure to provide a valid and existing file path for the operation.
+        INTENDED_SYNTAX:
+            <([^>]*)>
+        TYPE:
+            $#Fatal error$!:
+        MANUAL:
+            The error code PRP1_002 occurs when an invalid file path is provided. This means the \n parser or program tried to use a file path, but it was incorrect or could not be found. \n To fix this error, make sure you supply a correct and valid file name or path whenever \n it is required.
+
+PREMETHEUS SYNTAX ERRORS:
+
+    PRP1_031:
+        MESSAGE:
+            $; $<eof$>$; expected near 'endif'
+        NOTE:
+            Only '$<ifn$>' or '$<ifdef$>' directives can use '$<endif$>'.
+        INTENDED_SYNTAX:
+            endif
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code $|PRP1_031$! indicates that the parser reached the end of the input and \n was expecting an $|_endif$! directive, but didn't find one. This error only applies to \n $|_if$! directives, meaning you likely started an $|_if$! block and forgot to close it \n with $|_endif$!. To fix this, make sure every $|_if$! block in your code is properly closed \n with an $|_endif$! before the end.
+
+    PRP1_032:
+        MESSAGE:
+            $;endif expected (to close 'ifn' or 'ifdef') near $<eof$>
+        NOTE:
+            An endif directive is expected after ifn/ifdef.
+        INTENDED_SYNTAX:
+            _if
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code $|PRP1_032$! means that an $|_endif$! directive is missing after an $|_if$! block. \n This happens when the parser gets to the end and notices that an $|_if$! statement hasn't \n been closed properly. The rule is simple: every $|_if$! needs a matching $|_endif$!. To fix this, \n just make sure you add an $|_endif$! after each $|_if$! block so your code stays organized \n and works as expected.
+    PRP1_033:
+        MESSAGE:
+            $;Expected (to close 'ifn' or 'ifdef') before $<elif$>
+        NOTE:
+            ...
+        INTENDED_SYNTAX:
+            elif
+        TYPE:
+            $#error$!:
+        MANUAL:
+            ...
+            
+    PRP1_041:
+        MESSAGE:
+            $;'$|}$!'$; expected near $|$<eof$>$!$; $!
+        NOTE:
+            Please check the syntax and ensure that the Braces block is properly enclosed.
+        INTENDED_SYNTAX:
+            \{([^}]*)(?:\}|$)
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code $|PRP1_041$! means that the parser expected a closing curly brace $|}$! \n near the end of the input but didn't find one. This usually happens when a block \n opened with $|{$! is not properly closed. To fix this, check your code and make sure \n every $|{$! has a matching $|}$! so your braces blocks are correctly enclosed.
+            
+    PRP1_042:
+        MESSAGE:
+            $; $|Missing$!$; opening curly brace '$|{$!' $!
+        NOTE:
+            Please check the syntax and ensure that the Braces block is properly enclosed.
+        INTENDED_SYNTAX:
+            }(?=[^}]*$)
+        TYPE:
+            $#error$!:
+        MANUAL:
+           The error code $|PRP1_042$! means that the parser was expecting an opening curly \n brace $|{$! but didnt find one where it was needed. This usually happens when you \n try to start a block but forget to include the $|{$!. To fix this, check your code \n and make sure that every block that requires an opening brace starts with $|{$! \n so your syntax stays correct.
+    
+    PRP1_050:
+        MESSAGE:
+            Unexpected token encountered in input.
+        NOTE:
+            Check for typos or misplaced symbols in your code.
+        INTENDED_SYNTAX:
+            ([a-z].*)
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_050 occurs when the parser finds a token or symbol it does not \n recognize. This usually means there is a typo or an unexpected character in your code. \n Review your code and correct any mistakes.
+            
+    PRP1_051:
+        MESSAGE:
+            Missing semicolon at end of statement.
+        NOTE:
+            Statements must end with a semicolon.
+        INTENDED_SYNTAX:
+            $;
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_051 indicates that a statement was not properly terminated with a \n semicolon. Make sure every statement ends with a semicolon.
+
+    PRP1_052:
+        MESSAGE:
+            Invalid assignment operator.
+        NOTE:
+            Use '=' for assignment.
+        INTENDED_SYNTAX:
+            =
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_052 means that an invalid operator was used for assignment. Use '=' \n to assign values.
+
+    PRP1_053:
+        MESSAGE:
+            Unmatched parenthesis detected.
+        NOTE:
+            Ensure all '(' have matching ')'.
+        INTENDED_SYNTAX:
+            ()
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_053 occurs when there is an opening or closing parenthesis without \n a match. Check your code for missing or extra parentheses.
+
+    PRP1_054:
+        MESSAGE:
+            Unexpected end of input.
+        NOTE:
+            The statement ended before completion.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_054 means the parser reached the end of the input unexpectedly. \n Make sure all code blocks and statements are complete.
+
+    PRP1_057:
+        MESSAGE:
+            Invalid string literal.
+        NOTE:
+            Strings must be enclosed in quotes.
+        INTENDED_SYNTAX:
+            "string"
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_057 means a string literal is not properly enclosed in quotes. \n Use double quotes to define strings.
+
+    PRP1_062:
+        MESSAGE:
+            Invalid escape sequence in string.
+        NOTE:
+            Use valid escape sequences.
+        INTENDED_SYNTAX:
+            \\n, \\t, \\", \\\\
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_062 indicates an invalid escape sequence in a string. Use only \n supported escape sequences.
+
+    PRP1_064:
+        MESSAGE:
+            Invalid numeric literal.
+        NOTE:
+            Check the number format.
+        INTENDED_SYNTAX:
+            123, 3.14
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_064 means a numeric literal is not formatted correctly. \n Use valid number formats.
+
+    PRP1_065:
+        MESSAGE:
+            Unexpected keyword in expression.
+        NOTE:
+            Keywords cannot be used as identifiers.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_065 occurs when a reserved keyword is used incorrectly. \n Do not use keywords as variable or function names.
+
+    PRP1_117:
+        MESSAGE:
+            Invalid operator usage.
+        NOTE:
+            Check operator placement and operands.
+        INTENDED_SYNTAX:
+            +, -, *, /
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_117 means an operator was used incorrectly. \n Ensure operators are used with valid operands.
+
+    PRP1_119:
+        MESSAGE:
+            Invalid comment syntax.
+        NOTE:
+            Use the correct comment delimiters.
+        INTENDED_SYNTAX:
+            //, /* */
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_119 means a comment is not properly formatted. \n Use the correct syntax for comments.
+
+    PRP1_124:
+        MESSAGE:
+            Invalid character in input.
+        NOTE:
+            Remove unsupported characters.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_124 occurs when an unsupported character is found in the input. \n Remove or replace invalid characters.
+
+    PRP1_144:
+        MESSAGE:
+            Invalid syntax in configuration file.
+        NOTE:
+            Fix the syntax errors in the configuration file.
+        INTENDED_SYNTAX:
+            config
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_144 occurs when the configuration file contains syntax errors. \n Correct the errors and try again.
+
+    PRP1_148:
+        MESSAGE:
+            Invalid regular expression.
+        NOTE:
+            Check the regular expression syntax.
+        INTENDED_SYNTAX:
+            regex
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_148 occurs when a regular expression is invalid. \n Correct the syntax of the regular expression.
+
+PREMETHEUS IDENTIFIER ERRORS:
+
+    PRP1_055:
+        MESSAGE:
+            Invalid identifier name.
+        NOTE:
+            Identifiers must start with a letter or underscore.
+        INTENDED_SYNTAX:
+            identifier
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_055 indicates that an identifier does not follow naming rules. Identifiers must start with a letter or underscore and contain only alphanumeric characters or underscores.
+
+    PRP1_123:
+        MESSAGE:
+            Invalid use of reserved word.
+        NOTE:
+            Reserved words cannot be used as identifiers.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_123 means a reserved word is used as a variable or function name. Use different names.
+
+PREMETHEUS VARIABLE ERRORS:
+
+    PRP1_063:
+        MESSAGE:
+            Duplicate variable declaration.
+        NOTE:
+            Variable already declared in this scope.
+        INTENDED_SYNTAX:
+            variable
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_063 occurs when a variable is declared more than once in the same scope. Use unique variable names.
+
+    PRP1_128:
+        MESSAGE:
+            Variable used before declaration.
+        NOTE:
+            Declare variables before use.
+        INTENDED_SYNTAX:
+            variable
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_128 occurs when a variable is used before it is declared. Declare variables before using them.
+
+PREMETHEUS FUNCTION ERRORS:
+
+    PRP1_059:
+        MESSAGE:
+            Function not defined.
+        NOTE:
+            Declare the function before use.
+        INTENDED_SYNTAX:
+            function
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_059 means a function was called before it was defined. Define the function before calling it.
+
+    PRP1_060:
+        MESSAGE:
+            Too many arguments in function call.
+        NOTE:
+            Check the function definition for the correct number of arguments.
+        INTENDED_SYNTAX:
+            function(args)
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_060 occurs when a function is called with more arguments than it accepts. Match the number of arguments to the function definition.
+
+    PRP1_061:
+        MESSAGE:
+            Too few arguments in function call.
+        NOTE:
+            Provide all required arguments.
+        INTENDED_SYNTAX:
+            function(args)
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_061 means a function was called with fewer arguments than required. Provide all necessary arguments.
+
+    PRP1_126:
+        MESSAGE:
+            Nested function definitions are not allowed.
+        NOTE:
+            Define functions at the top level.
+        INTENDED_SYNTAX:
+            function
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_126 occurs when a function is defined inside another function. Define all functions at the top level.
+
+    PRP1_129:
+        MESSAGE:
+            Invalid function return type.
+        NOTE:
+            Check the function's return type.
+        INTENDED_SYNTAX:
+            return type
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_129 means a function returns a value of the wrong type. Ensure the return value matches the function's return type.
+
+PREMETHEUS ARRAY ERRORS:
+
+    PRP1_058:
+        MESSAGE:
+            Array index out of bounds.
+        NOTE:
+            Index exceeds array size.
+        INTENDED_SYNTAX:
+            array[index]
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_058 occurs when an array is accessed with an invalid index. Ensure the index is within the valid range.
+
+PREMETHEUS CONSTANT ERRORS:
+
+    PRP1_118:
+        MESSAGE:
+            Constant value cannot be modified.
+        NOTE:
+            Do not assign new values to constants.
+        INTENDED_SYNTAX:
+            const
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_118 occurs when an attempt is made to modify a constant. Constants cannot be reassigned.
+
+PREMETHEUS POINTER ERRORS:
+
+    PRP1_130:
+        MESSAGE:
+            Invalid use of pointer.
+        NOTE:
+            Check pointer initialization and usage.
+        INTENDED_SYNTAX:
+            *
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_130 occurs when a pointer is used incorrectly. Initialize pointers before use and avoid invalid dereferencing.
+
+    PRP1_132:
+        MESSAGE:
+            Null pointer dereference.
+        NOTE:
+            Check for null before dereferencing pointers.
+        INTENDED_SYNTAX:
+            *
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_132 occurs when a null pointer is dereferenced. Always check if a pointer is null before using it.
+
+PREMETHEUS MEMORY ERRORS:
+
+    PRP1_131:
+        MESSAGE:
+            Memory allocation failed.
+        NOTE:
+            Not enough memory available.
+        INTENDED_SYNTAX:
+            malloc, new
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_131 means memory allocation was unsuccessful. Ensure sufficient memory is available.
+
+    PRP1_133:
+        MESSAGE:
+            Stack overflow detected.
+        NOTE:
+            Too much recursion or large allocations.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_133 means the stack size limit was exceeded. Avoid deep recursion and large stack allocations.
+
+PREMETHEUS LOOP ERRORS:
+
+    PRP1_120:
+        MESSAGE:
+            Break statement not within loop.
+        NOTE:
+            Use break only inside loops.
+        INTENDED_SYNTAX:
+            break
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_120 occurs when a break statement is used outside of a loop. Only use break inside loops.
+
+    PRP1_121:
+        MESSAGE:
+            Continue statement not within loop.
+        NOTE:
+            Use continue only inside loops.
+        INTENDED_SYNTAX:
+            continue
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_121 means a continue statement is used outside of a loop. Only use continue inside loops.
+
+    PRP1_134:
+        MESSAGE:
+            Infinite loop detected.
+        NOTE:
+            Check loop termination conditions.
+        INTENDED_SYNTAX:
+            while, for
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_134 occurs when a loop does not terminate. Ensure all loops have valid exit conditions.
+
+PREMETHEUS RETURN ERRORS:
+
+    PRP1_122:
+        MESSAGE:
+            Return statement not within function.
+        NOTE:
+            Use return only inside functions.
+        INTENDED_SYNTAX:
+            return
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_122 occurs when a return statement is used outside of a function. Only use return inside functions.
+
+PREMETHEUS OPERATION ERRORS:
+
+    PRP1_056:
+        MESSAGE:
+            Division by zero detected.
+        NOTE:
+            Cannot divide by zero.
+        INTENDED_SYNTAX:
+            /
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_056 occurs when a division by zero is attempted. Ensure the divisor is not zero.
+
+    PRP1_127:
+        MESSAGE:
+            Invalid type conversion.
+        NOTE:
+            Check the types before converting.
+        INTENDED_SYNTAX:
+            (type)value
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_127 means a value cannot be converted to the specified type. Ensure the conversion is valid.
+
+    PRP1_149:
+        MESSAGE:
+            Operation not supported.
+        NOTE:
+            This operation is not supported in the current context.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_149 means the requested operation is not supported. Use only supported operations.
+
+    PRP1_150:
+        MESSAGE:
+            Unknown error occurred.
+        NOTE:
+            An unspecified error has occurred.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_150 is a generic error for unknown issues. Check your code and environment for possible problems.
+
+PREMETHEUS MACRO ERRORS:
+
+    PRP1_091:
+        MESSAGE:
+            Undeclared-Macro Found.
+        NOTE:
+            There was no $<definition$> of the macro used above.
+        INTENDED_SYNTAX:
+            ([a-z]+)
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_091 occurs when you use a macro that has not been defined. \n This means the parser found a reference to a macro in your code, but \n there was no corresponding definition for it. To fix this error, make sure \n that every macro you use is properly declared before you reference it.
+   
+    PRP1_094:
+        MESSAGE:
+            Unable to define Macro with parameters inside a Parent Macro.
+        NOTE:
+            Try defining a macro without any parameters parenthesis.
+        INTENDED_SYNTAX:
+            [()].*
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_094 occurs
+
+    PRP1_095:
+        MESSAGE:
+            '%s' was called with parentheses but does not accept any arguments.
+        NOTE:
+            There was $<no definition$> of the macro used above.
+        INTENDED_SYNTAX:
+            %s
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_095 occurs when you use a macro that has not been defined. \n This means the parser found a reference to a macro '$<%s$>' in your code, but \n there was no corresponding definition for it. To fix this error, make sure \n that every macro you use is properly declared before you reference it.
+
+    PRP1_125:
+        MESSAGE:
+            Invalid macro usage.
+        NOTE:
+            Check macro definition and usage.
+        INTENDED_SYNTAX:
+            %macro
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_125 means a macro is used incorrectly. Ensure macros are defined and used properly.
+
+PREMETHEUS MACRO WARNINGS:
+    PRP1_092:
+        MESSAGE:
+            Empty Macro Found.
+        NOTE:
+            Macro can cause unexpected things to happen in the program.
+        INTENDED_SYNTAX:
+            %s
+        TYPE:
+            $|warning$!:
+        MANUAL:
+            The warning code PRP1_092 occurs when you declare a macro that has been defined with no statements.\n Meaning that the Macro is defined without any value. The reason for the warning being that it can \n cause unexpected things to happen when it is used in the code.
+
+PREMETHEUS DIRECTIVE INVOKED:
+    PRP1_093:
+        MESSAGE:
+            Warning Directive invoked.
+        NOTE:
+            as expected the warning was raised
+        INTENDED_SYNTAX:
+            "([^"]*)"
+        TYPE:
+            $|(Invoked)$> $|warning$!:
+        MANUAL:
+            None
+    
+    PRP1_094:
+        MESSAGE:
+            Error Directive invoked.
+        NOTE:
+            as expected the Error was raised
+        INTENDED_SYNTAX:
+            "([^"]*)"
+        TYPE:
+            $|(Invoked)$> $#error$!:
+        MANUAL:
+            None
+
+PREMETHEUS FILE ERRORS:
+
+    PRP1_135:
+        MESSAGE:
+            Invalid file format.
+        NOTE:
+            Provide a file in the correct format.
+        INTENDED_SYNTAX:
+            .txt, .prp
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_135 means the file format is not supported. Use files in the correct format.
+
+    PRP1_136:
+        MESSAGE:
+            File read error.
+        NOTE:
+            Unable to read from file.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_136 occurs when a file cannot be read. Check file permissions and existence.
+
+    PRP1_137:
+        MESSAGE:
+            File write error.
+        NOTE:
+            Unable to write to file.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_137 means a file cannot be written to. Check file permissions and available disk space.
+
+PREMETHEUS ARGUMENT/CONFIGURATION ERRORS:
+
+    PRP1_138:
+        MESSAGE:
+            Invalid command line argument.
+        NOTE:
+            Check the arguments passed to the program.
+        INTENDED_SYNTAX:
+            abcdefghijklmnopqrstuvwxyz
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_138 occurs when an invalid argument is provided. Use only supported arguments.
+
+    PRP1_140:
+        MESSAGE:
+            Invalid configuration option.
+        NOTE:
+            Check the configuration file for errors.
+        INTENDED_SYNTAX:
+            option
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_140 occurs when a configuration option is invalid. Use only supported options.
+
+PREMETHEUS ENVIRONMENT ERRORS:
+
+    PRP1_139:
+        MESSAGE:
+            Environment variable not set.
+        NOTE:
+            Set the required environment variable.
+        INTENDED_SYNTAX:
+            ENV_VAR
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_139 means a required environment variable is missing. Set the variable before running the program.
+
+PREMETHEUS PERMISSION/RESOURCE ERRORS:
+
+    PRP1_141:
+        MESSAGE:
+            Operation timed out.
+        NOTE:
+            The operation took too long to complete.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_141 means an operation exceeded the allowed time. Optimize the operation or increase the timeout.
+
+    PRP1_142:
+        MESSAGE:
+            Permission denied.
+        NOTE:
+            Check user permissions.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_142 occurs when the user does not have the required permissions. Adjust permissions as needed.
+
+    PRP1_143:
+        MESSAGE:
+            Resource temporarily unavailable.
+        NOTE:
+            Try the operation again later.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_143 means a resource is currently unavailable. Wait and retry the operation.
+
+PREMETHEUS FEATURE/DEPENDENCY ERRORS:
+
+    PRP1_145:
+        MESSAGE:
+            Feature not implemented.
+        NOTE:
+            This feature is not available yet.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_145 means the requested feature is not implemented. Wait for a future update.
+
+    PRP1_146:
+        MESSAGE:
+            Deprecated feature used.
+        NOTE:
+            Update your code to use supported features.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_146 occurs when a deprecated feature is used. Update your code to use the latest features.
+
+    PRP1_147:
+        MESSAGE:
+            Circular dependency detected.
+        NOTE:
+            Remove circular references in your code.
+        INTENDED_SYNTAX:
+            None
+        TYPE:
+            $#error$!:
+        MANUAL:
+            The error code PRP1_147 means there is a circular dependency between modules or files. Refactor your code to remove circular references.

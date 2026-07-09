@@ -1,0 +1,27 @@
+
+//ifndef (__x86_64__) and (__arm64__) and (__ppc64le__) and (__s390x__) {
+//    error "Unsupported architecture. Supported architectures are: x86_64, arm64, ppc64le, s390x."
+//}
+
+ifdef (__x86_64__) {
+
+    define simd_add(aa, b) {
+        pragma new
+        pragma "paddq " + aa + ", " + b
+    }
+    
+    define simd_mul(a, b) {
+        pragma new
+        pragma "pmuludq " + a + ", " + b
+    }
+}
+elif (__x86_64__) {
+    define simd_add(a, b) {
+        pragma new
+        pragma "add v0.2d, " + a + ", " + b
+    }
+}
+fawf
+
+fn simd_add(v1, v2)
+

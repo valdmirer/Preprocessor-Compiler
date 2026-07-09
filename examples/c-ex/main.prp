@@ -1,0 +1,134 @@
+/*
+ *  You can’t really know where you are going until you know where you have been.
+ */
+
+include <c/std/stdio.prp>
+
+define false  0x01
+define true   0x10
+define null   0x00
+
+include "../c"
+error "This error ran fine."
+define _WIN32
+
+define def_ASM {
+    _ifdef _WIN32 \
+        define Address _LOWER#_MANAGER => #asm => #_REGISTER#asmx86
+    _else \
+        _LOWER#_REGISTER  => #asm => #_REGISTER
+        define Address _LOWER#_MANAGER => #asm => #_REGISTER#asmx86_64
+    _endif
+}
+
+define _8_BITS() {
+    _LOWER#_MANAGER => #asm => "[BITS 8]"
+}
+define _16_BITS {
+    _LOWER#_MANAGER => #asm => "[BITS 16]"
+}
+define _64_BITS {
+    _LOWER#_MANAGER => #asm => "[BITS 64]"
+}
+_8_BITS()
+// (add value to manager and then add value to value) hehe
+// _LOWER#<manager> => <value> => <value's value>
+// #<value> can be another Manager or Register
+
+// 1. add arm32 to the MANAGER as a REGISTER
+// 2. get arm32 value from preprocess
+// 3. or if you wanna log the action, for fallback
+_LOWER#_MANAGER  => #asm => #_REGISTER
+_LOWER#_MANAGER  => #asm
+_LOWER#_MANAGER  => #asm
+_LOWER#_MANAGER  => #_REGISTER#asm
+_LOWER#_MANAGER => #_REGISTER#"heyyyyyyyyyyy"
+
+/*      DEFINING PREPROCESSOR ASM  ✍️(◔◡◔)      */
+
+def_ASM
+false
+null
+true
+
+//lower is a preprocessor pipeline
+define __asm(nasm) {
+    warning 0 "damn"
+    error 0 "niiiice"
+    _LOWER#_MANAGER => #_REGISTER#0
+}
+
+/*      DEFINING TYPES   (＞﹏＜╰)`
+        • definitions have no scope!   ＼(ﾟｰﾟ＼)      */
+
+// 1. defining a preprocessor
+// define <NAME> <regex>
+// 2. defining a 
+// define <NAME> <regex>,<action> (action can be assembly or a macro)
+// OR
+// define <NAME> <regex | regex>,<action>
+define FUNCTION     "\s*function\s+(.*)", __asm("nigga")
+define STRUCT       "\s*struct\s+(.*)", __asm("nigga1")
+define INT          "\s*int\s+(.*)" | "\s*int\s+(.*)", __asm("nigga2")
+define ENUM         "\s*enum\s+(.*)", __asm("nigga3")
+FUNCTION
+
+// lowering directives
+// with its value as regex
+pragma directive INT
+pragma directive STRUCT
+pragma directive FUNCTION
+
+/*      (👉ﾟヮﾟ)👉  DEFINING BASIC FUNCTIONS  STDlib     */
+define if(condition, options) {
+    // 1. create a lower level condition eval with assembly.
+    // 2. if the program requires more blocks you put a "=> \" at its end to pass content arguements
+    __asm(".start: \n mov rdx, 0") => heeyyyy
+    //   ^-IF_NASM(condition)
+}
+define a rafayel
+a = hey
+a
+// ... uses all the arguements for the new macro
+// the old macro content will be ran
+define IF_INIT {
+    if(...) => null
+    warning "nigga money"
+}
+
+if (true) {
+    _ifdef if \
+        _LOWER#_MANAGER => #asm => ""
+    _endif
+}
+_LOWER#_MANAGER => #asm => "nice audhawodaowdh"
+_ifdef if
+    error "running 1"
+    _ifdef if
+        error "running 2"
+        _ifdef if
+            error "running 3"
+            //_LOWER#_REGISTER  => #asm => #_REGISTER
+            if (condition) null
+        _else
+            //_LOWER#_REGISTER  => #asm => #_REGISTER
+        _endif
+    _else
+        //_LOWER#_REGISTER  => #asm => #_REGISTER
+    _endif
+_endif
+// warnings are preprocessed
+__asm("nice audhawodaowdh")
+
+warning "this is a warning."
+
+
+__asm("my assembly warning")
+
+if (true) {
+    // true
+    include <a>
+}
+IF_INIT
+
+IF_INIT

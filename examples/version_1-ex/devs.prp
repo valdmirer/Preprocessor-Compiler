@@ -1,0 +1,465 @@
+include <examples/version_1-ex/library/General.prp>
+
+// ==================== CORE SYNTAX ====================
+
+// Program structure
+define program(name) {
+    pragma new 0x01
+    pragma "section .text"
+    pragma "global _" + name
+    pragma "_" + name + ":"
+    pragma "push rbp"
+    pragma "mov rbp, rsp"
+}
+
+define endprogram {
+    pragma new 0x02
+    pragma "mov rsp, rbp"
+    pragma "pop rbp"
+    pragma "ret"
+}
+
+// Function definition
+define func(name) {
+    pragma new
+    pragma name + ":"
+    pragma "push rbp"
+    pragma "mov rbp, rsp"
+}
+ 
+define return(value) {
+    pragma new
+    pragma "mov rax, " + value
+    pragma "mov rsp, rbp"
+    pragma "pop rbp"
+    pragma "ret"
+}
+
+// Variable declaration
+define let(name, value) {
+    pragma new
+    pragma name + " dq " + value
+}
+
+define var(name, value) {
+    pragma new
+    pragma name + " dd " + value
+}
+
+// Memory operations
+define load(reg, addr) {
+    pragma new
+    pragma "mov " + reg + ", [" + addr + "]"
+}
+
+define store(addr, value) {
+    pragma new
+    pragma "mov [" + addr + "], " + value
+}
+
+// ==================== CONTROL FLOW ====================
+
+// Conditional statements
+define if(condition) {
+    pragma new
+    pragma "cmp " + condition
+    pragma "jne .L_endif_" + __LINE__
+}
+
+define else {
+    pragma new
+    pragma "jmp .L_endelse_" + __LINE__
+    pragma ".L_endif_" + (__LINE__-2) + ":"
+}
+
+define endif {
+    pragma new
+    pragma ".L_endelse_" + (__LINE__-3) + ":"
+}
+
+// Loops
+define while(condition) {
+    pragma new
+    pragma ".L_while_start_" + __LINE__ + ":"
+    pragma "cmp " + condition
+    pragma "je .L_while_end_" + __LINE__
+}
+
+define endwhile {
+    pragma new
+    pragma "jmp .L_while_start_" + (__LINE__-3)
+    pragma ".L_while_end_" + (__LINE__-3) + ":"
+}
+
+define for(init, condition, increment) {
+    pragma new
+    pragma init
+    pragma ".L_for_start_" + __LINE__ + ":"
+    pragma "cmp " + condition
+    pragma "je .L_for_end_" + __LINE__
+}
+
+define endfor {
+    pragma new
+    pragma increment
+    pragma "jmp .L_for_start_" + (__LINE__-4)
+    pragma ".L_for_end_" + (__LINE__-4) + ":"
+}
+
+// ==================== ARITHMETIC OPERATIONS ====================
+
+define add(dest, src) {
+    pragma new
+    pragma "add " + dest + ", " + src
+}
+
+define sub(dest, src) {
+    pragma new
+    pragma "sub " + dest + ", " + src
+}
+
+define mul(dest, src) {
+    pragma new
+    pragma "imul " + dest + ", " + src
+}
+
+define div(src) {
+    pragma new
+    pragma "xor rdx, rdx"
+    pragma "mov rax, " + dest
+    pragma "idiv " + src
+    pragma "mov " + dest + ", rax"
+}
+
+define inc(reg) {
+    pragma new
+    pragma "inc " + reg
+}
+
+define dec(reg) {
+    pragma new
+    pragma "dec " + reg
+}
+
+// ==================== BITWISE OPERATIONS ====================
+
+define and(dest, src) {
+    pragma new
+    pragma "and " + dest + ", " + src
+}
+
+define or(dest, src) {
+    pragma new
+    pragma "or " + dest + ", " + src
+}
+
+define xor(dest, src) {
+    pragma new
+    pragma "xor " + dest + ", " + src
+}
+
+define not(reg) {
+    pragma new
+    pragma "not " + reg
+}
+
+define shl(reg, bits) {
+    pragma new
+    pragma "shl " + reg + ", " + bits
+}
+
+define shr(reg, bits) {
+    pragma new
+    pragma "shr " + reg + ", " + bits
+}
+
+// ==================== STACK OPERATIONS ====================
+
+define push(value) {
+    pragma new
+    pragma "push " + value
+}
+
+define pop_(reg) {
+    pragma new
+    pragma "pop " + reg
+}
+
+define call(func) {
+    pragma new
+    pragma "call " + func
+}
+
+// ==================== SYSTEM CALLS & IO ====================
+
+define print(str) {
+    pragma new
+    // sys_write
+    pragma "mov rax, 1"
+    // stdout
+    pragma "mov rdi, 1"
+    pragma "mov rsi, " + str
+    pragma "mov rdx, " + str.length
+    pragma "syscall"
+}
+
+define println(str) {
+    print(str)
+    pragma new
+    pragma "mov rax, 1"
+    pragma "mov rdi, 1"
+    pragma "mov rsi, newline"
+    pragma "mov rdx, 1"
+    pragma "syscall"
+}
+
+define input(buffer, size) {
+    pragma new
+    // sys_read
+    pragma "mov rax, 0"
+    // stdin
+    pragma "mov rdi, 0"
+    pragma "mov rsi, " + buffer
+    pragma "mov rdx, " + size
+    pragma "syscall"
+}
+
+define exit(code) {
+    pragma new
+    // sys_exit
+    pragma "mov rax, 60"
+    pragma "mov rdi, " + code
+    pragma "syscall"
+}
+
+// ==================== DATA SECTION DEFINITIONS ====================
+
+define data {
+    pragma new
+    pragma "section .data"
+}
+
+define bss {
+    pragma new
+    pragma "section .bss"
+}
+
+define string(name, value) {
+    pragma new
+    pragma name + " db '" + value + "', 0"
+    pragma name + "_len equ $" - name
+}
+
+define array(name, type, size) {
+    pragma new
+    pragma name + " res" + type + " " + size
+}
+
+define constant(name, value) {
+    pragma new
+    pragma name + " equ " + value
+}
+
+// ==================== TYPE SYSTEM ====================
+
+define int8(name, value) {
+    pragma new
+    pragma name + " db " + value
+}
+
+define int16(name, value) {
+    pragma new
+    pragma name + " dw " + value
+}
+
+define int32(name, value) {
+    pragma new
+    pragma name + " dd " + value
+}
+
+define int64(name, value) {
+    pragma new
+    pragma name + " dq " + value
+}
+
+define float(name, value) {
+    pragma new
+    pragma name + " dd " + value
+}
+
+define double(name, value) {
+    pragma new
+    pragma name + " dq " + value
+}
+
+// ==================== MEMORY MANAGEMENT ====================
+
+define malloc(size) {
+    pragma new
+    // sys_mmap
+    pragma "mov rax, 9"  
+    // addr
+    pragma "xor rdi, rdi"
+    pragma "mov rsi, " + size
+    // PROT_READ | PROT_WRITE
+    pragma "mov rdx, 0x3"    
+    // MAP_PRIVATE | MAP_ANONYMOUS
+    pragma "mov r10, 0x22"   
+    // fd
+    pragma "mov r8, -1"      
+    // offset
+    pragma "xor r9, r9"      
+    pragma "syscall"
+}
+
+define free(ptr, size) {
+    pragma new
+    pragma "mov rax, 11"     // sys_munmap
+    pragma "mov rdi, " + ptr
+    pragma "mov rsi, " + size
+    pragma "syscall"
+}
+
+// ==================== UTILITY FUNCTIONS ====================
+
+define swap(a, b) {
+    pragma new
+    pragma "mov rcx, [" + a + "]"
+    pragma "mov rdx, [" + b + "]"
+    pragma "mov [" + a + "], rdx"
+    pragma "mov [" + b + "], rcx"
+}
+
+define min(a, b) {
+    pragma new
+    pragma "mov rax, " + a
+    pragma "cmp rax, " + b
+    pragma "cmovg rax, " + b
+}
+
+define max(a, b) {
+    pragma new
+    pragma "mov rax, " + a
+    pragma "cmp rax, " + b
+    pragma "cmovl rax, " + b
+}
+
+define abs(reg) {
+    pragma new
+    pragma "mov rax, " + reg
+    pragma "neg rax"
+    pragma "cmovl rax, " + reg
+}
+
+// ==================== RUNTIME CONSTANTS ====================
+
+pragma new
+pragma "section .data"
+pragma "newline db 10"
+pragma "space db 32"
+pragma "tab db 9"
+pragma "null db 0"
+
+// ==================== MACRO SYSTEM ====================
+
+define macro(name, params) {
+    pragma new
+    pragma "%macro " + name + " " + params.length
+    for param in params {
+        pragma "    " + param
+    }
+    pragma "%endmacro"
+}
+
+// ==================== OPTIMIZATION PRAGMAS ====================
+
+define optimize(speed) {
+    if(speed == "fast") {
+        pragma new
+        pragma "; OPTIMIZATION: FAST"
+        pragma "align 16"
+    } elif(speed == "small") {
+        pragma new
+        pragma "; OPTIMIZATION: SMALL"
+        pragma "align 8"
+    }
+}
+
+define inline {
+    pragma new
+    pragma "; INLINE EXPANSION"
+}
+
+define noinline {
+    pragma new
+    pragma "; NO INLINE"
+}
+
+// ==================== DEBUGGING SUPPORT ====================
+
+define debug_break {
+    pragma new
+    pragma "int3"
+}
+
+define trace(msg) {
+    pragma new
+    pragma "; TRACE: " + msg
+}
+
+define assert(condition) {
+    pragma new
+    pragma "test " + condition
+    pragma "jz .assert_fail"
+    pragma ".assert_ok:"
+    pragma "nop"
+}
+// ==================== MAIN ENTRY POINT ====================
+
+define main() {
+    pragma new
+    pragma "_start:"
+    pragma "call main"
+    pragma "mov rdi, rax"
+    pragma "mov rax, 60"
+    pragma "syscall"
+}
+
+// ==================== ARCHITECTURE-SPECIFIC OPTIMIZATIONS ====================
+// todo: same lines cause flag error FUCK ME
+
+ifdef (__x86_64__) {
+    define simd_add(a, ba) {
+        pragma new
+        pragma "paddq " + a + ", " + b
+    }
+    
+    define simd_mul(a, b) {
+        pragma new
+        pragma "pmuludq " + a + ", " + b
+    }
+}
+elif (__arm64_) {
+    define simd_add(a, b) {
+        pragma new
+        pragma "add v0.2d, " + a + ", " + b
+    }
+}
+elif () {
+    error "This architecture is not supported."
+}
+
+// ==================== FINAL PROGRAM TEMPLATE ====================
+
+simd_add(151, 4)
+main()
+assert(1)
+program()
+
+pragma new
+pragma "; COMPILATION COMPLETE"
+pragma "; GENERATED ASSEMBLY READY FOR NASM/YASM"
+
+
+
+
